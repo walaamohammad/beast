@@ -1,25 +1,55 @@
-import logo from './logo.svg';
+
+import React from 'react';
+import Header from './components/Header';
+import Main from './components/Main';
+import Footer from './components/Footer';
+import SelectedBeast from './components/SelectedBeast'; 
+import Data from './components/data.json';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component{
+  constructor (props){
+    super(props);
+    this.state={
+     Data:Data,
+     show:false,
+     selectedCard:[]
+
+     
+    }
+  }
+
+  renderfilter=(horn)=>{
+this.setState({
+  Data:horn
+})
+  }
+
+  handeleClose=()=>{
+    this.setState({show:false})
+  }
+
+popUpTheCard=(title)=>{
+  let selectedCard= Data.find(card=>{
+    if (card.title===title){
+      return card ;
+    }
+  })
+  this.setState({
+    show:true,
+    selectedCard:selectedCard
+  })
 }
 
+  render(){
+    return(
+      <div>
+        <Header/>
+        <Main Data={this.state.Data} popUpTheCard={this.popUpTheCard} renderfilter={this.renderfilter}/>
+        <Footer/>
+        <SelectedBeast shown={this.state.show}handeleClose={this.handeleClose}selectedCard={this.state.selectedCard}/>
+      </div>
+    )
+  }
+}
 export default App;
